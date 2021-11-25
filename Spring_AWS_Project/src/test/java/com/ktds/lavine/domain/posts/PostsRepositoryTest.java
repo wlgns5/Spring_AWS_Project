@@ -5,14 +5,14 @@ import static org.hamcrest.Matchers.equalTo;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 // 자동으로 H2 DB를 실행해주는 Annotation
 @SpringBootTest
 public class PostsRepositoryTest {
@@ -20,7 +20,7 @@ public class PostsRepositoryTest {
 	@Autowired
 	PostsRepository postsRepository;
 	
-	@After
+	@AfterEach
 	public void cleanup() {
 		postsRepository.deleteAll();
 	}
