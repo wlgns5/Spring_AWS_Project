@@ -1,11 +1,14 @@
 package com.ktds.lavine.service.posts;
 
-import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktds.lavine.domain.posts.Posts;
 import com.ktds.lavine.domain.posts.PostsRepository;
+import com.ktds.lavine.web.dto.PostsListResponseDto;
 import com.ktds.lavine.web.dto.PostsResponseDto;
 import com.ktds.lavine.web.dto.PostsSaveRequestDto;
 import com.ktds.lavine.web.dto.PostsUpdateRequestDto;
@@ -38,5 +41,20 @@ public class PostsService {
 				.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 		return new PostsResponseDto(entity);
 	}
-
+	
+	@Transactional(readOnly = true)
+	public List<PostsListResponseDto> findAllDesc() {
+		return postsRepository.findAllDesc().stream()
+				.map(PostsListResponseDto::new)
+				.collect(Collectors.toList());
+		
+	}
+	
+	@Transactional
+	public void delete(Long id) {
+		Posts posts = postsRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+		
+		postsRepository.delete(posts);
+	}
 }
